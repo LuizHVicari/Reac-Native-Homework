@@ -1,31 +1,30 @@
-import { StyleSheet } from 'react-native';
+import { AxiosService } from '@/services/axiosService'
+import { useState } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+export default function Index() {
+  const axiosService = new AxiosService()
 
-export default function TabOneScreen() {
+  const [message, setMessage] = useState('')
+
+  const sendMessage = async () => {
+    const response = await axiosService.sendMessage(
+      'olá, você consegue me responder?'
+    )
+
+    setMessage(response.content)
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+    <View className="flex-1 p-8">
+      <Text className="text-lg text-black">Tab One</Text>
+      <TouchableOpacity
+        className="flex-row justify-center items-center bg-slate-900 p-4"
+        onPress={sendMessage}
+      >
+        <Text className="text-white text-2xl">Send Message to API</Text>
+      </TouchableOpacity>
+      {message && <Text className="text-slate-950">{message}</Text>}
     </View>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
