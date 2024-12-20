@@ -21,8 +21,6 @@ export class AxiosService {
   async sendMessage(content: string): Promise<OpenRouterMessage> {
     const requestBody = this.createRequestBody(content);
     const response = await this.sendRequest(requestBody);
-    console.log(`Response: ${response.data.choices[0].message.content}`)
-
 
     if (!this.isRequestSuccessful(response.status)) {
       throw this.createHttpError(response);
